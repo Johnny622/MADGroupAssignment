@@ -4,29 +4,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView switchPageTesting;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        switchPageTesting = findViewById(R.id.switchPage);
-
-        switchPageTesting.setOnClickListener(new View.OnClickListener() {
+        //switch from front page to py discussion page
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                Intent pyDiscussion = new Intent(MainActivity.this, past_year_discussion.class);
-                pyDiscussion.putExtra("py", "PY Discussion");
-                startActivity(pyDiscussion);
+            public void run() {
+                startActivity(new Intent(MainActivity.this, past_year_discussion.class));
+                finish();
             }
-        });
+        }, 3000);
 
     }
 }

@@ -1,4 +1,4 @@
-package my.edu.utar.groupassignment
+package my.edu.utar.groupassignment;
 
 import android.content.Context
 import android.util.Log
@@ -14,7 +14,7 @@ data class SentenceSimilarity(
     val sentence: String,
     val mainSentenceEmbeddings: String,
     val sentenceEmbeddings: String,
-    val resultSimilarity: Double,
+    val resultSimilarity: Double
 )
 
 class MediaPipeEmbeddings {

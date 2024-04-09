@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">GroupAssignment</string>
+    <string name="title1">Welcome to "\n"UTAR Past Year Discussion !</string>
+    <string name="title2">Upload Your Questions</string>
+    <string name="title3">Engage in Discussions</string>
+    <string name="title4">Enhance Learning Experience</string>
+    <string name="subtitle1">Explore Past Exam Questions "\n"and Collaborate with Peers</string>
+    <string name="subtitle2">Share Exam Challenges in "\n"Text, PDF, or Image Formats</string>
+    <string name="subtitle3">Exchange Ideas and "\n"Solutions with Peers</string>
+    <string name="subtitle4">Foster Collaboration and "\n"Confidence for Academic Success</string>
+    <string name="skip">Skip</string>
 </resources>

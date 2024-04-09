@@ -19,11 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //switch from front page to py discussion page
+        //Splash screen with animation
+        //Switch front page to another page
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(MainActivity.this, past_year_discussion.class));
+                startActivity(new Intent(MainActivity.this, walk_through.class));
                 finish();
             }
         }, 3000);

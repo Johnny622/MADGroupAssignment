@@ -1,11 +1,10 @@
 package my.edu.utar.groupassignment;
 
 public class ListData {
-    String subject;
+    int name;
     int image;
-
-    public ListData(String subject, int image) {
-        this.subject = subject;
+    public ListData(int name, int image) {
+        this.name = name;
         this.image = image;
     }
 }

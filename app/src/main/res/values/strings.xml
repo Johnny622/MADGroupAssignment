@@ -9,4 +9,15 @@
     <string name="subtitle3">Exchange Ideas and "\n"Solutions with Peers</string>
     <string name="subtitle4">Foster Collaboration and "\n"Confidence for Academic Success</string>
     <string name="skip">Skip</string>
+
+
+    //subject name
+    <string name="DC">UCCN1004 Data Communications and Networking</string>
+    <string name="EIT">MPU32143 English For Information Technology</string>
+    <string name="PEP">MPU3153 Penghayatan Etika Dan Peradaban</string>
+    <string name="ME">MPU33013 Malaysian Economy</string>
+
+
+
+
 </resources>

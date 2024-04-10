@@ -19,4 +19,7 @@
     <color name="blue_light">#90C2F8</color>
     <color name="blue_dark">#5591EB</color>
 
+    <!--select subject list color-->
+    <color name="lavendar">#8692f7</color>
+
 </resources>

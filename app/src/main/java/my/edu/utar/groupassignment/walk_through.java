@@ -40,7 +40,7 @@ public class walk_through extends AppCompatActivity {
         dotsFunction(0);
         saveState = new SaveState(walk_through.this, "0B");
         if(saveState.getState() == 1){
-            Intent i = new Intent(walk_through.this, past_year_discussion.class);
+            Intent i = new Intent(walk_through.this, subject_list_main.class);
             startActivity(i);
             finish();
         }
@@ -99,7 +99,7 @@ public class walk_through extends AppCompatActivity {
                     public void onClick(View v) {
 
                         saveState.setState(1);
-                        Intent i = new Intent(walk_through.this, past_year_discussion.class);
+                        Intent i = new Intent(walk_through.this, subject_list_main.class);
                         startActivity(i);
                         finish();
                     }

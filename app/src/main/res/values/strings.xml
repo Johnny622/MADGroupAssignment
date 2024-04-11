@@ -14,10 +14,12 @@
     //subject name
     <string name="DC">UCCN1004 Data Communications and Networking</string>
     <string name="EIT">MPU32143 English For Information Technology</string>
-    <string name="PEP">MPU3153 Penghayatan Etika Dan Peradaban</string>
+    <string name="FR">UALF1003 Introduction To French</string>
     <string name="ME">MPU33013 Malaysian Economy</string>
 
-
-
+    //semester
+    <string name="Jan">January</string>
+    <string name="May">May</string>
+    <string name="Oct">October</string>
 
 </resources>

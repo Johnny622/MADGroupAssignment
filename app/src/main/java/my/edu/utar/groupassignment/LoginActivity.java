@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
-
     private TextView statusTextView;
     private Button signInButton;
     private Button signOutButton;

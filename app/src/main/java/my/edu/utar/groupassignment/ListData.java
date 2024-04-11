@@ -1,9 +1,9 @@
 package my.edu.utar.groupassignment;
 
 public class ListData {
-    int name;
+    String name;
     int image;
-    public ListData(int name, int image) {
+    public ListData(String name, int image) {
         this.name = name;
         this.image = image;
     }

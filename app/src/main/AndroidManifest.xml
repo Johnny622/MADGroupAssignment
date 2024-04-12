@@ -27,6 +27,11 @@
         <activity
             android:name=".past_year_discussion"
             android:exported="false" />
+
+        <activity android:name="presentation.Login"
+            android:exported="false"/>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

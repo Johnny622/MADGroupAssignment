@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,4 +31,15 @@ public class MainActivity extends AppCompatActivity {
         }, 3000);
 
     }
+
+    public void openCommentsActivity(String postKey) {
+        if (postKey != null && !postKey.isEmpty()) {
+            Intent intent = new Intent(this, Comments.class);
+            intent.putExtra("postkey", postKey);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Post key is missing!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

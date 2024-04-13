@@ -24,10 +24,10 @@ public class subject_list_main extends AppCompatActivity {
         setContentView(R.layout.activity_subject_list_main);
         subjectlistView = findViewById(R.id.subjectListview);
 
-        int[] imageList = {R.drawable.computer, R.drawable.english, R.drawable.language, R.drawable.maths};
+        int[] imageList = {R.drawable.computer, R.drawable.english, R.drawable.language, R.drawable.maths,R.drawable.computer};
         //int[] nameList = {R.string.DC, R.string.EIT, R.string.PEP, R.string.ME};
 
-        String[] nameList = {"UCCN1004 Data Communications and Networking", "MPU32143 English For Information Technology", "UALF1003 Introduction To French", "MPU33013 Malaysian Economy"};
+        String[] nameList = {"UCCN1004 Data Communications and Networking", "MPU32143 English For Information Technology", "UALF1003 Introduction To French", "MPU33013 Malaysian Economy","Mobile Application Development"};
 
         for (int i = 0; i < imageList.length; i++) {
             listData = new ListData(nameList[i], imageList[i]);

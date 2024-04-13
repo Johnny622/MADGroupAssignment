@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import my.edu.utar.groupassignment.Adapters.OnBoardingAdapter;
 import my.edu.utar.groupassignment.Helpers.SaveState;
-import presentation.Login;
+
 
 public class walk_through extends AppCompatActivity {
 
@@ -41,11 +41,11 @@ public class walk_through extends AppCompatActivity {
         dotsFunction(0);
         saveState = new SaveState(walk_through.this, "0B");
         if(saveState.getState() == 1){
-<<<<<<< HEAD
-            Intent i = new Intent(walk_through.this, subject_list_main.class);
-=======
-            Intent i = new Intent(walk_through.this, UploadPDF.class);
->>>>>>> 4408bb1c3bd0e836ef80e71870310a04b0f73adc
+
+            //Intent i = new Intent(walk_through.this, subject_list_main.class);
+
+            Intent i = new Intent(walk_through.this, Login.class);
+
             startActivity(i);
             finish();
         }
@@ -104,7 +104,7 @@ public class walk_through extends AppCompatActivity {
                     public void onClick(View v) {
 
                         saveState.setState(1);
-                        Intent i = new Intent(walk_through.this, subject_list_main.class);
+                        Intent i = new Intent(walk_through.this, Login.class);
                         startActivity(i);
                         finish();
                     }

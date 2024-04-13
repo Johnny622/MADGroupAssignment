@@ -24,5 +24,11 @@
 
     <string name="web_client_id">746481494498-crmkkn346comdun4ogva0b9tac19ic14.apps.googleusercontent.com</string>
 
-
+    <string-array name="subjects_array">
+        <item>MPU32143 English For Information Technology</item>
+        <item>MPU33013 Malaysian Economy</item>
+        <item>UALF1003 Introduction To French</item>
+        <item>UCCN1004 Data Communications and Networking</item>
+        <!-- Add more subjects as needed -->
+    </string-array>
 </resources>

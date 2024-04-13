@@ -41,7 +41,7 @@ public class walk_through extends AppCompatActivity {
         dotsFunction(0);
         saveState = new SaveState(walk_through.this, "0B");
         if(saveState.getState() == 1){
-            Intent i = new Intent(walk_through.this, Login.class);
+            Intent i = new Intent(walk_through.this, UploadPDF.class);
             startActivity(i);
             finish();
         }

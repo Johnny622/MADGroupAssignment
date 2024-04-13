@@ -16,6 +16,9 @@
         android:theme="@style/Theme.GroupAssignment"
         tools:targetApi="31">
         <activity
+            android:name=".UploadPDF"
+            android:exported="false" />
+        <activity
             android:name=".semester_year_list"
             android:exported="false" />
         <activity
@@ -27,11 +30,9 @@
         <activity
             android:name=".past_year_discussion"
             android:exported="false" />
-
-        <activity android:name="presentation.Login"
-            android:exported="false"/>
-
-
+        <activity
+            android:name="presentation.Login"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

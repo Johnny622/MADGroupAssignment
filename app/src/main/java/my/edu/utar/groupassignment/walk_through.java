@@ -47,7 +47,7 @@ public class walk_through extends AppCompatActivity {
 
             Intent i = new Intent(walk_through.this, selection.class);
 
-            //Intent i = new Intent(walk_through.this, Login.class);
+//            Intent i = new Intent(walk_through.this, Login.class);
 
             startActivity(i);
             finish();

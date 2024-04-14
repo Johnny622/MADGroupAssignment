@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import javax.security.auth.Subject;
+
 import my.edu.utar.groupassignment.Adapters.OnBoardingAdapter;
 import my.edu.utar.groupassignment.Helpers.SaveState;
 
@@ -27,6 +29,7 @@ public class walk_through extends AppCompatActivity {
     int currentPosition;
 
     SaveState saveState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,11 +43,11 @@ public class walk_through extends AppCompatActivity {
         viewPager = findViewById(R.id.slider);
         dotsFunction(0);
         saveState = new SaveState(walk_through.this, "0B");
-        if(saveState.getState() == 1){
+        if (saveState.getState() == 1) {
 
-            //Intent i = new Intent(walk_through.this, subject_list_main.class);
+            Intent i = new Intent(walk_through.this, selection.class);
 
-            Intent i = new Intent(walk_through.this, Login.class);
+            //Intent i = new Intent(walk_through.this, Login.class);
 
             startActivity(i);
             finish();
@@ -55,18 +58,18 @@ public class walk_through extends AppCompatActivity {
         nextCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(currentPosition+1, true);
+                viewPager.setCurrentItem(currentPosition + 1, true);
             }
         });
 
         viewPager.setOnPageChangeListener(onPageChangeListener);
     }
 
-    private void dotsFunction(int pos){
+    private void dotsFunction(int pos) {
         dots = new TextView[4];
         dotsLayout.removeAllViews();
 
-        for(int i=0; i < dots.length ; i++){
+        for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(".");
             dots[i].setTextColor(getColor(R.color.white));
@@ -75,7 +78,7 @@ public class walk_through extends AppCompatActivity {
             dotsLayout.addView(dots[i]);
         }
 
-        if(dots.length > 0){
+        if (dots.length > 0) {
             dots[pos].setTextColor(getColor(R.color.teal_700));
             dots[pos].setTextSize(40);
         }
@@ -91,14 +94,14 @@ public class walk_through extends AppCompatActivity {
         public void onPageSelected(int position) {
             dotsFunction(position);
             currentPosition = position;
-            if(currentPosition <= 2) {
+            if (currentPosition <= 2) {
                 nextCard.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        viewPager.setCurrentItem(currentPosition+1);
+                        viewPager.setCurrentItem(currentPosition + 1);
                     }
                 });
-            }else{
+            } else {
                 nextCard.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

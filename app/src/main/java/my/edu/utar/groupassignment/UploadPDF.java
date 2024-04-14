@@ -36,14 +36,14 @@ import java.util.List;
 public class UploadPDF extends AppCompatActivity {
 
     Button upload_btn;
-    EditText subject_trimester, subject_comments;
+    EditText subject_comments,otherSubjectName;
 
-    Spinner subjectSpinner,yearSpinner;
+    Spinner subjectSpinner,yearSpinner,trimesterSpinner;
     TextView display_SelectedFile;
     StorageReference storageReference;
     DatabaseReference databaseReference;
 
-    String selectedYear, selectedSubject;
+    String selectedYear, selectedSubject,selectedTrimester;
 
 
     @Override
@@ -52,11 +52,12 @@ public class UploadPDF extends AppCompatActivity {
         setContentView(R.layout.activity_upload_pdf);
 
         upload_btn = findViewById(R.id.upload_btn);
-        subject_trimester = findViewById(R.id.subject_tri_text);
         subject_comments = findViewById(R.id.subject_comment_text);
         display_SelectedFile = findViewById(R.id.display_upload_file);
         subjectSpinner = findViewById(R.id.subject_name_spinner);
         yearSpinner = findViewById(R.id.subject_year_spinner);
+        trimesterSpinner =findViewById(R.id.subject_tri_spinner);
+        otherSubjectName = findViewById(R.id.other_subject_edit_text);
 
     //*Start of Subject Spinner*
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -69,6 +70,11 @@ public class UploadPDF extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedSubject = parentView.getItemAtPosition(position).toString();
                 // Do something with the selected subject
+                if (selectedSubject.equals("Other")) {
+                    otherSubjectName.setVisibility(View.VISIBLE);
+                } else {
+                    otherSubjectName.setVisibility(View.GONE);
+                }
                 // For example, you can display it or use it in further processing
                 Log.d("SelectedSubject", selectedSubject);
             }
@@ -111,6 +117,32 @@ public class UploadPDF extends AppCompatActivity {
             }
         });
     //*End of subject year spinner*
+
+    //*Start of subject trimester spinner*
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> Triadapter = ArrayAdapter.createFromResource(this,
+                R.array.trimesters_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        Triadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        trimesterSpinner.setAdapter(Triadapter);
+
+        trimesterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedTrimester = parentView.getItemAtPosition(position).toString();
+                // Do something with the selected year
+                // For example, you can display it or use it in further processing
+                Log.d("SelectedTrimester", selectedTrimester);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing when nothing is selected
+            }
+        });
+    //*End of subject trimester spinner*
+
         //Database
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -151,6 +183,10 @@ public class UploadPDF extends AppCompatActivity {
 
     private void UploadFiles(Uri data) {
 
+        if (otherSubjectName.getVisibility() == View.VISIBLE) {
+            selectedSubject = otherSubjectName.getText().toString();
+        }
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
@@ -167,7 +203,7 @@ public class UploadPDF extends AppCompatActivity {
 
                         String subject = selectedSubject;
                         String year = selectedYear;
-                        String month = subject_trimester.getText().toString();
+                        String month = selectedTrimester;
                         String comment = subject_comments.getText().toString();
 
                         pdfClass pdfClass = new pdfClass(comment, url.toString());

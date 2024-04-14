@@ -29,6 +29,13 @@
         <item>MPU33013 Malaysian Economy</item>
         <item>UALF1003 Introduction To French</item>
         <item>UCCN1004 Data Communications and Networking</item>
+        <item>Other</item>
         <!-- Add more subjects as needed -->
+    </string-array>
+
+    <string-array name="trimesters_array">
+        <item>JAN</item>
+        <item>MAY</item>
+        <item>OCT</item>
     </string-array>
 </resources>

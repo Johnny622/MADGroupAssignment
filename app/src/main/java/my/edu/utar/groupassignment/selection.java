@@ -32,7 +32,7 @@ public class selection extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the upload activity
-                Intent intent = new Intent(selection.this, past_year_discussion.class);
+                Intent intent = new Intent(selection.this, Subject_List.class);
                 startActivity(intent);
             }
         });

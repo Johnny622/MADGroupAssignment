@@ -9,6 +9,15 @@
     android:padding="5dp"
     tools:context=".past_year_discussion">
 
+    <TextView
+        android:id="@+id/currentDirectory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:background="@color/gray"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfView"
         android:layout_width="match_parent"

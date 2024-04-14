@@ -28,29 +28,37 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/subject_text"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/subject_name"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:hint="Please enter subject name"-->
-<!--        android:textSize="20sp" />-->
-
-    <Spinner
-        android:id="@+id/subject_name_spinner"
+    <LinearLayout
+        android:id="@+id/subject_LL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subject_name"
-        android:layout_marginTop="10dp"
-        android:hint="Please select a subject"
-        android:textSize="25sp" />
+        android:layout_below="@+id/subject_name"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/subject_name_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Please select a subject"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/other_subject_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Enter subject"
+            android:inputType="text"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/subject_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_name_spinner"
+        android:layout_below="@+id/subject_LL"
         android:layout_marginTop="10dp"
         android:text="Year (eg. 2024 / 2023 )"
         android:textSize="20sp" />
@@ -73,8 +81,8 @@
         android:text="Trimester (eg. JAN / MAY / OCT )"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/subject_tri_text"
+    <Spinner
+        android:id="@+id/subject_tri_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/subject_tri"
@@ -86,7 +94,7 @@
         android:id="@+id/subject_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subject_tri_text"
+        android:layout_below="@id/subject_tri_spinner"
         android:layout_marginTop="10dp"
         android:text="Comment :"
         android:textSize="20sp" />
@@ -106,7 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/subject_comment_text"
         android:layout_marginTop="10dp"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/upload_btn"

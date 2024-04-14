@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity {
                                 name.setText(auth.getCurrentUser().getDisplayName());
                                 mail.setText(auth.getCurrentUser().getEmail());
                                 Toast.makeText(Login.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Login.this, selection.class);
+                                Intent intent = new Intent(Login.this, home_page.class);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(Login.this, "Failed to sign in: " + task.getException(), Toast.LENGTH_SHORT).show();

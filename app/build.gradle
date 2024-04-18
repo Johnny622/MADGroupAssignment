@@ -60,6 +60,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.3.1'
     implementation 'com.google.firebase:firebase-storage:20.3.0'
     implementation 'com.google.firebase:firebase-auth:22.3.1'
+<<<<<<< HEAD
+=======
+
+>>>>>>> dc29d50a12cff600eb0372b518190bc2e69dacf2
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -70,7 +74,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
 
     implementation platform('com.google.firebase:firebase-bom:31.5.0')
+<<<<<<< HEAD
 
+=======
+>>>>>>> dc29d50a12cff600eb0372b518190bc2e69dacf2
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
 

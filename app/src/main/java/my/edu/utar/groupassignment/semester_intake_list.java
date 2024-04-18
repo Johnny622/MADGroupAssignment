@@ -2,6 +2,7 @@ package my.edu.utar.groupassignment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,52 +18,58 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import my.edu.utar.groupassignment.databinding.ActivityMainBinding;
 
-public class subject_list_main extends AppCompatActivity {
+public class semester_intake_list extends AppCompatActivity {
 
-    ListView subjectlistView;  ////
-    ListAdapter listAdapter;
-    ArrayList<ListData> dataArrayList = new ArrayList<>();
-    ListData listData;
     DatabaseReference mDatabase;
+    ListView intakeListView;
+    IntakeAdapter intakeAdapter;
+    IntakeData intakeData;
+    ArrayList<IntakeData> intakeArrayList = new ArrayList<>();
+    String subjectName,subjectYear;
 
     TextView currentDirectory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subject_list_main);
-        subjectlistView = findViewById(R.id.subjectListview);
+        setContentView(R.layout.activity_semester_intake_list);
+        intakeListView = findViewById(R.id.intakeListview);
         currentDirectory = findViewById(R.id.currentDirectory);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        subjectName = getIntent().getStringExtra("name");
+        subjectYear = getIntent().getStringExtra("year");
+
+        mDatabase.child(subjectName).child(subjectYear).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot categorySnapshot : snapshot.getChildren()) {
-                    String subjectName = categorySnapshot.getKey();
+                for(DataSnapshot trimesterSnapshot : snapshot.getChildren()){
+                    String month = trimesterSnapshot.getKey();
 
-                    listData = new ListData(subjectName);
-                    dataArrayList.add(listData);
+                    intakeData = new IntakeData(month);
+                    intakeArrayList.add(intakeData);
 
-                    listAdapter = new ListAdapter(subject_list_main.this, dataArrayList);
+                    intakeAdapter = new IntakeAdapter(semester_intake_list.this, intakeArrayList);
 
-                    subjectlistView.setAdapter(listAdapter);
-                    subjectlistView.setClickable(true);
+                    intakeListView.setAdapter(intakeAdapter);
+                    intakeListView.setClickable(true);
 
-                    subjectlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    intakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Log.d("SubjectName", "Selected subject: " + subjectName );
-                            Intent intent = new Intent(subject_list_main.this, semester_year_list.class);
+                            Intent intent = new Intent(semester_intake_list.this, past_year_discussion.class);
                             intent.putExtra("name",subjectName);
+                            intent.putExtra("year",subjectYear);
+                            intent.putExtra("month",month);
                             startActivity(intent);
                         }
+
                     });
-                    currentDirectory.setText(subjectName);
+                    currentDirectory.setText(subjectName + " > "+ subjectYear + " > "+ month);
+
                 }
             }
 
@@ -71,5 +78,6 @@ public class subject_list_main extends AppCompatActivity {
 
             }
         });
+
     }
 }

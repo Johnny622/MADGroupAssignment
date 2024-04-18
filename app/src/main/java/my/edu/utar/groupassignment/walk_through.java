@@ -45,11 +45,9 @@ public class walk_through extends AppCompatActivity {
         saveState = new SaveState(walk_through.this, "0B");
         if (saveState.getState() == 1) {
 
-<<<<<<< HEAD
-            Intent i = new Intent(walk_through.this,Login.class);
-=======
+           // Intent i = new Intent(walk_through.this,Login.class);
+
             Intent i = new Intent(walk_through.this, Login.class);
->>>>>>> dc29d50a12cff600eb0372b518190bc2e69dacf2
 
 //            Intent i = new Intent(walk_through.this, Login.class);
 

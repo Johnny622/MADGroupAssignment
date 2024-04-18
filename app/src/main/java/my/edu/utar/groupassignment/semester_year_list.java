@@ -1,54 +1,96 @@
 package my.edu.utar.groupassignment;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.vanniktech.emoji.EmojiPopup;
-import com.vanniktech.emoji.EmojiTextView;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class semester_year_list extends AppCompatActivity {
 
     DatabaseReference mDatabase;
-
-    ListView semesterListView;
-
-    SemesterAdapter listAdapter;
-
-
-    ArrayList<SemesterData> semesterDataArrayList = new ArrayList<>();
+    ListView yearListView;
+    YearAdapter yearAdapter;
+    YearData yearData;
+    ArrayList<YearData> yearArrayList = new ArrayList<>();
     String subjectName;
 
+    TextView currentDirectory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_semester_year_list);
+        yearListView = findViewById(R.id.yearListview);
+        currentDirectory = findViewById(R.id.currentDirectory);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         subjectName = getIntent().getStringExtra("name");
         Log.d("SubjectName", "Subject Name: " + subjectName);
 
-       semesterListView = findViewById(R.id.semesterListview);
+        mDatabase.child(subjectName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot yearSnapshot : dataSnapshot.getChildren()){
+                    String year = yearSnapshot.getKey();
+
+                    yearData = new YearData(year);
+                    yearArrayList.add(yearData);
+
+                    yearAdapter = new YearAdapter(semester_year_list.this , yearArrayList);
+
+                    yearListView.setAdapter(yearAdapter);
+                    yearListView.setClickable(true);
+
+                    yearListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Log.d("SubjectName", "Selected subject: " + subjectName );
+                            Intent intent = new Intent(semester_year_list.this, semester_intake_list.class);
+                            intent.putExtra("name",subjectName);
+                            intent.putExtra("year",year);
+                            startActivity(intent);
+                        }
+
+                    });
+
+                    currentDirectory.setText(subjectName + " > "+ year);
 
 
+
+//                    button.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            // Create an intent to navigate to Subject_year.java
+//                            Intent intent = new Intent(semester_year_list.this, Subject_Trimester.class);
+//                            // Pass the subject value to the new activity
+//                            intent.putExtra("currentSubject", subjectName);
+//                            intent.putExtra("currentYear",year);
+//                            startActivity(intent);
+//                        }
+//                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error
+            }
+        });
 
         if (subjectName != null) {
             retrieveSemesterDataForSubject(subjectName);
@@ -60,50 +102,50 @@ public class semester_year_list extends AppCompatActivity {
 
 
     private void retrieveSemesterDataForSubject(String subjectName) {
-        semesterDataArrayList.clear();
+//        semesterDataArrayList.clear();
 
-        if (subjectName.equals(getString(R.string.DC))) {
-            semesterDataArrayList.add(new SemesterData("September", 2023));
-            semesterDataArrayList.add(new SemesterData("May", 2023));
-            semesterDataArrayList.add(new SemesterData("September", 2022));
-            semesterDataArrayList.add(new SemesterData("May", 2022));
-        } else if (subjectName.equals(getString(R.string.EIT))) {
-            semesterDataArrayList.add(new SemesterData("May", 2022));
-            semesterDataArrayList.add(new SemesterData("December", 2021));
-            semesterDataArrayList.add(new SemesterData("September", 2021));
-        } else if (subjectName.equals(getString(R.string.FR))) {
-            semesterDataArrayList.add(new SemesterData("May", 2022));
-            semesterDataArrayList.add(new SemesterData("December", 2021));
-            semesterDataArrayList.add(new SemesterData("September", 2021));
-        } else if (subjectName.equals(getString(R.string.ME))) {
-            semesterDataArrayList.add(new SemesterData("December", 2023));
-            semesterDataArrayList.add(new SemesterData("May", 2023));
-            semesterDataArrayList.add(new SemesterData("December", 2022));
-            semesterDataArrayList.add(new SemesterData("May", 2022));
-        }
+//        if (subjectName.equals(getString(R.string.DC))) {
+//            semesterDataArrayList.add(new SemesterData("September", 2023));
+//            semesterDataArrayList.add(new SemesterData("May", 2023));
+//            semesterDataArrayList.add(new SemesterData("September", 2022));
+//            semesterDataArrayList.add(new SemesterData("May", 2022));
+//        } else if (subjectName.equals(getString(R.string.EIT))) {
+//            semesterDataArrayList.add(new SemesterData("May", 2022));
+//            semesterDataArrayList.add(new SemesterData("December", 2021));
+//            semesterDataArrayList.add(new SemesterData("September", 2021));
+//        } else if (subjectName.equals(getString(R.string.FR))) {
+//            semesterDataArrayList.add(new SemesterData("May", 2022));
+//            semesterDataArrayList.add(new SemesterData("December", 2021));
+//            semesterDataArrayList.add(new SemesterData("September", 2021));
+//        } else if (subjectName.equals(getString(R.string.ME))) {
+//            semesterDataArrayList.add(new SemesterData("December", 2023));
+//            semesterDataArrayList.add(new SemesterData("May", 2023));
+//            semesterDataArrayList.add(new SemesterData("December", 2022));
+//            semesterDataArrayList.add(new SemesterData("May", 2022));
+//        }
 
         // Create adapter and set it to ListView
         //listAdapter = new SemesterAdapter(getApplicationContext(), semesterDataArrayList);
-        listAdapter = new SemesterAdapter(semester_year_list.this, semesterDataArrayList);
-        semesterListView.setAdapter(listAdapter);
-
-        // Set item click listener
-        semesterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                SemesterData selectedSemester = semesterDataArrayList.get(i);
-                Intent intent = new Intent(semester_year_list.this, past_year_discussion.class);
-                intent.putExtra("pdfFileName", getPDFFileName(selectedSemester));
-                startActivity(intent);
-            }
-        });
+//        listAdapter = new YearAdapter(semester_year_list.this, semesterDataArrayList);
+//        semesterListView.setAdapter(listAdapter);
+//
+//        // Set item click listener
+//        semesterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                YearData selectedSemester = semesterDataArrayList.get(i);
+//                Intent intent = new Intent(semester_year_list.this, past_year_discussion.class);
+//                intent.putExtra("pdfFileName", getPDFFileName(selectedSemester));
+//                startActivity(intent);
+//            }
+//        });
     }
 
-    private String getPDFFileName(SemesterData semesterData) {
-
-        // Logic to determine the PDF file name based on the semester and year
-        return subjectName + "_" + semesterData.semester + "_" + semesterData.year + ".pdf";
-    }
+//    private String getPDFFileName(YearData semesterData) {
+//
+//        // Logic to determine the PDF file name based on the semester and year
+//        return subjectName + "_" + semesterData.semester + "_" + semesterData.year + ".pdf";
+//    }
 
     private void showErrorAndFinish(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();

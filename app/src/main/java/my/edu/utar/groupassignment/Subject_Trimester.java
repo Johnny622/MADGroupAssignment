@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +21,7 @@ public class Subject_Trimester extends AppCompatActivity {
 
     DatabaseReference mDatabase;
     TextView currentDirectory;
-    String selectedSubject,selectedYear;
+    String selectedSubject,selectedYear,paperID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class Subject_Trimester extends AppCompatActivity {
         // Get the subject value passed from the previous activity
         selectedSubject = getIntent().getStringExtra("currentSubject");
         selectedYear=getIntent().getStringExtra("currentYear");
-        currentDirectory.setText(selectedSubject+" > "+selectedYear);
+        currentDirectory.setText(selectedSubject+" > "+selectedYear+ " > ");
 
         retrieveAndCreateButtons(selectedSubject,selectedYear);
     }
@@ -58,6 +59,8 @@ public class Subject_Trimester extends AppCompatActivity {
                             intent.putExtra("currentSubject",selectedSubject);
                             intent.putExtra("currentYear",selectedYear);
                             intent.putExtra("currentTrimester",trimester);
+                            intent.putExtra("PaperID",paperID);
+
 
                             startActivity(intent);
                         }
@@ -68,6 +71,7 @@ public class Subject_Trimester extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle database error
+                Toast.makeText(Subject_Trimester.this, "Failed to retrieve data: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -27,7 +27,7 @@ public class home_page extends AppCompatActivity {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(home_page.this, Subject_List.class);
+                Intent intent = new Intent(home_page.this, subject_list_main.class);
                 startActivity(intent);
                 finish();
             }

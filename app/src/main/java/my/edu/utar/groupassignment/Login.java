@@ -107,6 +107,7 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(Login.this, "Signed out successfully", Toast.LENGTH_SHORT).show();
+
                                     startActivity(new Intent(Login.this, MainActivity.class));
                                 }
                             });

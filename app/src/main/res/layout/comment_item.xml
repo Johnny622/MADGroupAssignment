@@ -6,9 +6,16 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/commentText"
+        android:id="@+id/userTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_gravity="center_vertical" />
+        android:layout_weight="1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" />
+
 </LinearLayout>

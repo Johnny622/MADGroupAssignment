@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
@@ -40,13 +41,14 @@ import java.util.List;
 
 public class UploadPDF extends AppCompatActivity {
 
-    Button upload_btn;
-    EditText subject_comments, otherSubjectName;
+    Button upload_btn, choose_file_btn;
+    EditText subject_comments, otherSubjectName, otherSubjectTrimester;
 
     Spinner subjectSpinner, yearSpinner, trimesterSpinner;
     TextView display_SelectedFile;
     StorageReference storageReference;
     DatabaseReference databaseReference;
+    Uri selectedFileUri;
 
     String selectedYear, selectedSubject, selectedTrimester;
 
@@ -64,6 +66,8 @@ public class UploadPDF extends AppCompatActivity {
         yearSpinner = findViewById(R.id.subject_year_spinner);
         trimesterSpinner = findViewById(R.id.subject_tri_spinner);
         otherSubjectName = findViewById(R.id.other_subject_edit_text);
+        otherSubjectTrimester = findViewById(R.id.otherTrimester);
+        choose_file_btn = findViewById(R.id.choose_file_btn);
 
         //*Start of Subject Spinner*
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -139,6 +143,12 @@ public class UploadPDF extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedTrimester = parentView.getItemAtPosition(position).toString();
                 // Do something with the selected year
+
+                if (selectedTrimester.equals("Other")) {
+                    otherSubjectTrimester.setVisibility(View.VISIBLE);
+                } else {
+                    otherSubjectTrimester.setVisibility(View.GONE);
+                }
                 // For example, you can display it or use it in further processing
                 Log.d("SelectedTrimester", selectedTrimester);
             }
@@ -154,10 +164,25 @@ public class UploadPDF extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        upload_btn.setOnClickListener(new View.OnClickListener() {
+        choose_file_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectFiles();
+            }
+        });
+        upload_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadFiles(selectedFileUri);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        subject_comments.setText("");
+                        display_SelectedFile.setText("");
+                        upload_btn.setVisibility(View.GONE);
+                    }
+                }, 2000);
             }
         });
 
@@ -187,13 +212,16 @@ public class UploadPDF extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-            Uri selectedFileUri = data.getData();
+            selectedFileUri = data.getData();
 
             String filename = getFileName(selectedFileUri);
 
             display_SelectedFile.setText("Selected filename : " + filename);
 
-            UploadFiles(data.getData());
+            if (selectedFileUri != null) {
+                upload_btn.setVisibility(View.VISIBLE);
+            }
+
         }
 
     }
@@ -209,9 +237,9 @@ public class UploadPDF extends AppCompatActivity {
         progressDialog.show();
 
         String pastyearpaper = "Past Year Paper";
-        String subject = selectedSubject;
+        String subject = selectedSubject.toUpperCase();
         String year = selectedYear;
-        String month = selectedTrimester;
+        String month = selectedTrimester.toUpperCase();
 
 
         //Check path exist
@@ -221,7 +249,7 @@ public class UploadPDF extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             // Path already exists, show an error message
-                            Toast.makeText(UploadPDF.this, "Past Year Paper Exist!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadPDF.this, "Past Year Paper Exist!", Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
                         } else {
                             StorageReference reference = storageReference.child("Uploads/" + System.currentTimeMillis() + ".pdf");
@@ -242,7 +270,7 @@ public class UploadPDF extends AppCompatActivity {
                                             // Set the value in the database with the unique key
                                             databaseReference.child(pastyearpaper).child(subject).child(String.valueOf(year)).child(month).child(uniqueKey).setValue(pdfClass);
 
-                                            Toast.makeText(UploadPDF.this, "File Uploaded!!!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(UploadPDF.this, "File Uploaded!!!", Toast.LENGTH_LONG).show();
 
                                             progressDialog.dismiss();
                                         }

@@ -30,10 +30,11 @@
     <string name="client_id">746481494498-crmkkn346comdun4ogva0b9tac19ic14.apps.googleusercontent.com</string>
 
     <string-array name="subjects_array">
-        <item>MPU32143 English For Information Technology</item>
-        <item>MPU33013 Malaysian Economy</item>
-        <item>UALF1003 Introduction To French</item>
-        <item>UCCN1004 Data Communications and Networking</item>
+        <item>UCCD3223 MOBILE APPLICATIONS DEVELOPMENT</item>
+        <item>MPU32143 ENGLISH FOR INFORMATION TECHNOLOGY</item>
+        <item>MPU33013 MALAYSIA ECONOMY</item>
+        <item>UALF1003 INTRODUCTION TO FRENCH</item>
+        <item>UCCN1004 DATA COMMUNICATIONS AND NETWORKING</item>
         <item>Other</item>
         <!-- Add more subjects as needed -->
     </string-array>
@@ -42,5 +43,6 @@
         <item>JAN</item>
         <item>MAY</item>
         <item>OCT</item>
+        <item>Other</item>
     </string-array>
 </resources>

@@ -26,7 +26,8 @@
         android:layout_marginTop="10dp"
         android:text="Subject : "
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
 
     <LinearLayout
         android:id="@+id/subject_LL"
@@ -41,7 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Please select a subject"
-            android:textSize="25sp" />
+            android:textSize="30sp"
+            android:background="@drawable/spinner_design"/>
 
         <EditText
             android:id="@+id/other_subject_edit_text"
@@ -61,7 +63,8 @@
         android:layout_below="@+id/subject_LL"
         android:layout_marginTop="10dp"
         android:text="Year (eg. 2024 / 2023 )"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/subject_year_spinner"
@@ -70,7 +73,9 @@
         android:layout_below="@+id/subject_year"
         android:layout_marginTop="10dp"
         android:hint="Please select a subject year"
-        android:textSize="20dp" />
+        android:textSize="30sp"
+        android:background="@drawable/spinner_design"/>
+
 
     <TextView
         android:id="@+id/subject_tri"
@@ -79,22 +84,43 @@
         android:layout_below="@+id/subject_year_spinner"
         android:layout_marginTop="10dp"
         android:text="Trimester (eg. JAN / MAY / OCT )"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/subject_tri_spinner"
+    <LinearLayout
+        android:id="@+id/trimester_LL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_tri"
-        android:layout_marginTop="10dp"
-        android:hint="Please enter subject trimester"
-        android:textSize="20sp" />
+        android:layout_below="@id/subject_tri"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/subject_tri_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subject_tri"
+            android:layout_marginTop="10dp"
+            android:hint="Please enter subject trimester"
+            android:textSize="30sp"
+            android:background="@drawable/spinner_design"/>
+
+        <EditText
+            android:id="@+id/otherTrimester"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subject_tri_spinner"
+            android:layout_marginTop="10dp"
+            android:hint="Enter trimester"
+            android:inputType="text"
+            android:visibility="gone" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/subject_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subject_tri_spinner"
+        android:layout_below="@id/trimester_LL"
         android:layout_marginTop="10dp"
         android:text="Comment :"
         android:textSize="20sp" />
@@ -117,16 +143,27 @@
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/choose_file_btn"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/display_upload_file"
+        android:text="Select File"
+android:textSize="20sp"
+        />
+
+    <Button
         android:id="@+id/upload_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/display_upload_file"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="@color/black"
         android:padding="10dp"
         android:text="Upload PDF"
         android:textColor="#FF9800"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 </RelativeLayout>

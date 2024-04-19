@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +43,8 @@ public class past_year_discussion extends AppCompatActivity {
     Button postBtn;
     EditText discussionText;
     ImageView btEmoji;
+
+
 //    List<PaperDiscussion> discussionList;
 //    ArrayAdapter<PaperDiscussion> adapter;
 //    ListView listViewDiscussions;
@@ -50,7 +54,8 @@ public class past_year_discussion extends AppCompatActivity {
     private ListView listViewDiscussions;
     private DiscussionAdapter adapter;
     private List<PaperDiscussion> discussionList;
-
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); // Get the currently logged-in user
+    FirebaseAuth auth;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +80,8 @@ public class past_year_discussion extends AppCompatActivity {
         adapter = new DiscussionAdapter(this, R.layout.activity_past_year_discussion, discussionList);
         listViewDiscussions.setAdapter(adapter);
 
-        discussionList.add(new PaperDiscussion( "Hello World"));
-        discussionList.add(new PaperDiscussion( "This is a test message"));
+//        discussionList.add(new PaperDiscussion( "1","Huiyi","Hello World"));
+//        discussionList.add(new PaperDiscussion( "This is a test message"));
         adapter.notifyDataSetChanged();
 
         //emoji popup
@@ -118,13 +123,15 @@ public class past_year_discussion extends AppCompatActivity {
     }
 
     private void addEmojiText(){
+        String username = auth.getCurrentUser().getDisplayName(); // Get the user's name from their Google profile
+        //String userId = user.getUid();
         String text = discussionText.getText().toString();
         if (!text.isEmpty()) {
 //            EmojiTextView emojiTextView = (EmojiTextView) LayoutInflater.from(this).inflate(R.layout.emoji_text_view, listViewDiscussions, false);
 //            emojiTextView.setText(text);
 //            listViewDiscussions.addView(emojiTextView);
 //            discussionText.getText().clear(); // Clear after adding to view
-            discussionList.add(new PaperDiscussion(text));  // Assuming PaperDiscussion can be initialized this way
+            discussionList.add(new PaperDiscussion(username,text));  // Assuming PaperDiscussion can be initialized this way
             adapter.notifyDataSetChanged();  // Notify the adapter that the data has changed
             discussionText.getText().clear();
 
@@ -133,18 +140,47 @@ public class past_year_discussion extends AppCompatActivity {
 
     private void addDiscussion() {
 
+        auth = FirebaseAuth.getInstance();
         String comment = discussionText.getText().toString();
-        if(!comment.isEmpty()){
-            PaperDiscussion newDiscussion = new PaperDiscussion(comment);
-            discussionList.add(newDiscussion);
-            adapter.notifyDataSetChanged();
 
+        if (user != null && !comment.isEmpty()) {
+            String username = auth.getCurrentUser().getDisplayName(); // Get the user's name from their Google profile
+//            userTextView.setText()
+//
+//            String username = user.getDisplayName(); // Get the user's name from their Google profile
+
+            //String userId = user.getUid(); // Get the user's unique ID from Firebase Authentication
+
+            if (username == null || username.isEmpty()) {
+                username = "Anonymous"; // Fallback username if name is not available
+            }
+
+            PaperDiscussion newDiscussion = new PaperDiscussion(username, comment);
+
+            // Get a reference to the 'Comments' node and push the new discussion
             DatabaseReference commentsRef = mDatabase.child("Comments").push();
-            commentsRef.setValue(newDiscussion).addOnSuccessListener(aVoid->{
-                Toast.makeText(past_year_discussion.this, "Comment added!", Toast.LENGTH_SHORT).show();
-                discussionText.setText("");
-            }).addOnFailureListener(e -> Toast.makeText(past_year_discussion.this, "Failed to add comment: " + e.getMessage(), Toast.LENGTH_LONG).show());
+            commentsRef.setValue(newDiscussion)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(past_year_discussion.this, "Comment added!", Toast.LENGTH_SHORT).show();
+                        discussionText.setText(""); // Clear the text field after posting
+                        retrieveDiscussions(); // Optionally retrieve discussions to update the list
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(past_year_discussion.this, "Failed to add comment: " + e.getMessage(), Toast.LENGTH_LONG).show());
+        } else {
+            Toast.makeText(this, "User is not authenticated.", Toast.LENGTH_SHORT).show();
         }
+
+//        if(!comment.isEmpty()){
+//            PaperDiscussion newDiscussion = new PaperDiscussion(comment);
+//            discussionList.add(newDiscussion);
+//            adapter.notifyDataSetChanged();
+//
+//            DatabaseReference commentsRef = mDatabase.child("Comments").push();
+//            commentsRef.setValue(newDiscussion).addOnSuccessListener(aVoid->{
+//                Toast.makeText(past_year_discussion.this, "Comment added!", Toast.LENGTH_SHORT).show();
+//                discussionText.setText("");
+//            }).addOnFailureListener(e -> Toast.makeText(past_year_discussion.this, "Failed to add comment: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//        }
 
     }
     private void loadPDF(String pdfName) {

@@ -3,6 +3,8 @@ package my.edu.utar.groupassignment;
 public class PaperDiscussion {
 
     //private String user;
+
+    private String username;
     private String discussion;
 
 
@@ -10,12 +12,17 @@ public class PaperDiscussion {
     public PaperDiscussion() {
     }
 
-    public PaperDiscussion(String discussion) {
+    public PaperDiscussion( String username,String discussion) {
 //        this.user = user;
+
+        this.username = username;
         this.discussion = discussion;
     }
 
 
+    public String getUsername() {
+        return username;
+    }
 
 //    public String getUser() {
 //        return user;

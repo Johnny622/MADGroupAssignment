@@ -16,7 +16,7 @@ import android.widget.TextView;
 import javax.security.auth.Subject;
 
 import my.edu.utar.groupassignment.Adapters.OnBoardingAdapter;
-import my.edu.utar.groupassignment.Helpers.SaveState;
+
 
 
 public class walk_through extends AppCompatActivity {
@@ -24,11 +24,11 @@ public class walk_through extends AppCompatActivity {
     CardView nextCard;
     LinearLayout dotsLayout;
     ViewPager viewPager;
-
+    Button skipButton;
     TextView[] dots;
     int currentPosition;
 
-    SaveState saveState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +41,18 @@ public class walk_through extends AppCompatActivity {
         nextCard = findViewById(R.id.nextCard);
         dotsLayout = findViewById(R.id.dotsLayout);
         viewPager = findViewById(R.id.slider);
+        skipButton = findViewById(R.id.skipButton);
+
         dotsFunction(0);
-        saveState = new SaveState(walk_through.this, "0B");
-        if (saveState.getState() == 1) {
 
-           // Intent i = new Intent(walk_through.this,Login.class);
-
-            Intent i = new Intent(walk_through.this, Login.class);
-
-//            Intent i = new Intent(walk_through.this, Login.class);
-
-            startActivity(i);
-            finish();
-        }
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(walk_through.this, Login.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         OnBoardingAdapter adapter = new OnBoardingAdapter(this);
         viewPager.setAdapter(adapter);
@@ -108,10 +107,9 @@ public class walk_through extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        saveState.setState(1);
                         Intent i = new Intent(walk_through.this, Login.class);
                         startActivity(i);
-                        finish();
+
                     }
                 });
             }

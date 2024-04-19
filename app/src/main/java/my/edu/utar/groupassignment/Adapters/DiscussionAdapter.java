@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.vanniktech.emoji.EmojiTextView;
 
 import java.util.List;
@@ -79,7 +80,7 @@ import my.edu.utar.groupassignment.R;
 
 public class DiscussionAdapter extends ArrayAdapter<PaperDiscussion> {
     private int resource;
-
+    FirebaseAuth auth;
     public DiscussionAdapter(Context context, int resource, List<PaperDiscussion> discussions) {
         super(context, resource, discussions);
         this.resource = resource;
@@ -120,7 +121,9 @@ public class DiscussionAdapter extends ArrayAdapter<PaperDiscussion> {
 
         PaperDiscussion item = getItem(position);
         if (item != null) {
-            //holder.userTextView.setText(item.getUser());
+            auth = FirebaseAuth.getInstance();
+            holder.userTextView.setText(auth.getCurrentUser().getDisplayName() + ": ");
+
             holder.messageTextView.setText(item.getDiscussion());
         }
 

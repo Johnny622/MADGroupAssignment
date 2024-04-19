@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +42,9 @@ import java.util.List;
 
 public class UploadPDF extends AppCompatActivity {
 
-    Button upload_btn, choose_file_btn;
+    Button upload_btn;
+
+    ImageView choose_file_btn;
     EditText subject_comments, otherSubjectName, otherSubjectTrimester;
 
     Spinner subjectSpinner, yearSpinner, trimesterSpinner;

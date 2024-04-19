@@ -1,169 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/upload_pdf"
     tools:context=".UploadPDF">
 
-    <TextView
-        android:id="@+id/text_pdf"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="Upload PDF"
-        android:textColor="@color/black"
-        android:textSize="35sp"
-        android:textStyle="bold" />
+        android:layout_margin="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:background="@color/white">
 
-    <TextView
-        android:id="@+id/subject_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_pdf"
-        android:layout_marginTop="10dp"
-        android:text="Subject : "
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-
-    <LinearLayout
-        android:id="@+id/subject_LL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_name"
-        android:orientation="vertical">
-
-        <Spinner
-            android:id="@+id/subject_name_spinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Please select a subject"
-            android:textSize="30sp"
-            android:background="@drawable/spinner_design"/>
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="24dp">
 
-        <EditText
-            android:id="@+id/other_subject_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Enter subject"
-            android:inputType="text"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/text_pdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Upload PDF"
+                android:textColor="@color/black"
+                android:textSize="35sp"
+                android:fontFamily="@font/baloo" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/subject_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_pdf"
+                android:layout_marginTop="10dp"
+                android:text="Subject : "
+                android:textSize="20sp"
+                android:background="@color/lavendar"
+                android:fontFamily="@font/baloo" />
 
-    <TextView
-        android:id="@+id/subject_year"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_LL"
-        android:layout_marginTop="10dp"
-        android:text="Year (eg. 2024 / 2023 )"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/subject_LL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subject_name"
+                android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/subject_year_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_year"
-        android:layout_marginTop="10dp"
-        android:hint="Please select a subject year"
-        android:textSize="30sp"
-        android:background="@drawable/spinner_design"/>
+                <Spinner
+                    android:id="@+id/subject_name_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="2dp"
+                    android:hint="Please select a subject"
+                    android:textSize="30sp"
+                    android:background="@drawable/spinner_design"/>
 
+                <EditText
+                    android:id="@+id/other_subject_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Enter subject"
+                    android:inputType="text"
+                    android:visibility="gone" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/subject_tri"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_year_spinner"
-        android:layout_marginTop="10dp"
-        android:text="Trimester (eg. JAN / MAY / OCT )"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/subject_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subject_LL"
+                android:layout_marginTop="10dp"
+                android:text="Year (eg. 2024 / 2023 )"
+                android:textSize="20sp"
+                android:fontFamily="@font/baloo"
+                android:background="@color/lavendar" />
 
-    <LinearLayout
-        android:id="@+id/trimester_LL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/subject_tri"
-        android:orientation="vertical">
+            <Spinner
+                android:id="@+id/subject_year_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/subject_year"
+                android:layout_marginTop="2dp"
+                android:hint="Please select a subject year"
+                android:textSize="30sp"
+                android:background="@drawable/spinner_design"/>
 
-        <Spinner
-            android:id="@+id/subject_tri_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subject_tri"
-            android:layout_marginTop="10dp"
-            android:hint="Please enter subject trimester"
-            android:textSize="30sp"
-            android:background="@drawable/spinner_design"/>
+            <TextView
+                android:id="@+id/subject_tri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subject_year_spinner"
+                android:layout_marginTop="10dp"
+                android:text="Trimester (eg. JAN / MAY / OCT )"
+                android:background="@color/lavendar"
+                android:textSize="20sp"
+                android:fontFamily="@font/baloo"/>
 
-        <EditText
-            android:id="@+id/otherTrimester"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subject_tri_spinner"
-            android:layout_marginTop="10dp"
-            android:hint="Enter trimester"
-            android:inputType="text"
-            android:visibility="gone" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/trimester_LL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/subject_tri"
+                android:orientation="vertical">
 
+                <Spinner
+                    android:id="@+id/subject_tri_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/subject_tri"
+                    android:layout_marginTop="2dp"
+                    android:hint="Please enter subject trimester"
+                    android:textSize="30sp"
+                    android:background="@drawable/spinner_design"/>
 
-    <TextView
-        android:id="@+id/subject_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/trimester_LL"
-        android:layout_marginTop="10dp"
-        android:text="Comment :"
-        android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/otherTrimester"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/subject_tri_spinner"
+                    android:layout_marginTop="10dp"
+                    android:hint="Enter trimester"
+                    android:inputType="text"
+                    android:visibility="gone" />
+            </LinearLayout>
 
-    <EditText
-        android:id="@+id/subject_comment_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_comment"
-        android:layout_marginTop="10dp"
-        android:hint="Please leave some comment"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/subject_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/trimester_LL"
+                android:layout_marginTop="10dp"
+                android:text="Comment :"
+                android:fontFamily="@font/baloo"
+                android:background="@color/lavendar"
+                android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/display_upload_file"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subject_comment_text"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp" />
+            <EditText
+                android:id="@+id/subject_comment_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subject_comment"
+                android:layout_marginTop="10dp"
+                android:hint="Please leave some comment"
+                android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/choose_file_btn"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/display_upload_file"
-        android:text="Select File"
-android:textSize="20sp"
-        />
+            <TextView
+                android:id="@+id/display_upload_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subject_comment_text"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/upload_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/display_upload_file"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:backgroundTint="@color/black"
-        android:padding="10dp"
-        android:text="Upload PDF"
-        android:textColor="#FF9800"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:visibility="gone"/>
-</RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@+id/display_upload_file">
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/upload_btn"
+                    android:text="Done"
+                    android:textSize="20sp"
+                    android:backgroundTint="@color/blue_dark"
+                    app:cornerRadius = "20dp" />
+
+                <ImageView
+                    android:id="@+id/choose_file_btn"
+                    android:src="@drawable/upload_pdf_icon"
+                    android:layout_margin="5dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

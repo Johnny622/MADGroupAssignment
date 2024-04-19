@@ -37,7 +37,7 @@ public class subject_list_main extends AppCompatActivity {
         subjectlistView = findViewById(R.id.subjectListview);
         currentDirectory = findViewById(R.id.currentDirectory);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Past Year Paper");
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -47,7 +47,7 @@ public class subject_list_main extends AppCompatActivity {
 
                     listData = new ListData(subjectName);
                     dataArrayList.add(listData);
-
+                }
                     listAdapter = new ListAdapter(subject_list_main.this, dataArrayList);
 
                     subjectlistView.setAdapter(listAdapter);
@@ -56,14 +56,18 @@ public class subject_list_main extends AppCompatActivity {
                     subjectlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            String subjectName = dataArrayList.get(i).getName(); // Get the clicked subject
                             Log.d("SubjectName", "Selected subject: " + subjectName );
                             Intent intent = new Intent(subject_list_main.this, semester_year_list.class);
                             intent.putExtra("name",subjectName);
                             startActivity(intent);
                         }
                     });
-                    currentDirectory.setText(subjectName);
+                // Set current directory after adding all items
+                if (!dataArrayList.isEmpty()) {
+                    currentDirectory.setText(dataArrayList.get(0).getName());
                 }
+
             }
 
             @Override

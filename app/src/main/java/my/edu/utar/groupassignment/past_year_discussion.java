@@ -45,6 +45,8 @@ public class past_year_discussion extends AppCompatActivity {
 //    ArrayAdapter<PaperDiscussion> adapter;
 //    ListView listViewDiscussions;
 
+    String subjectName,subjectYear,subjectIntake;
+
     private ListView listViewDiscussions;
     private DiscussionAdapter adapter;
     private List<PaperDiscussion> discussionList;
@@ -54,7 +56,13 @@ public class past_year_discussion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_year_discussion);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        subjectName = getIntent().getStringExtra("name");
+        subjectYear = getIntent().getStringExtra("year");
+        subjectIntake = getIntent().getStringExtra("month");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Past Year Paper").child(subjectName).child(subjectYear).child(subjectIntake);
 
         postBtn = findViewById(R.id.postBtn);
         discussionText = findViewById(R.id.commentEditText);

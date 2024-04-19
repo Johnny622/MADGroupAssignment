@@ -26,7 +26,7 @@ public class semester_intake_list extends AppCompatActivity {
     IntakeAdapter intakeAdapter;
     IntakeData intakeData;
     ArrayList<IntakeData> intakeArrayList = new ArrayList<>();
-    String subjectName,subjectYear;
+    String subjectName, subjectYear;
 
     TextView currentDirectory;
 
@@ -37,7 +37,7 @@ public class semester_intake_list extends AppCompatActivity {
         intakeListView = findViewById(R.id.intakeListview);
         currentDirectory = findViewById(R.id.currentDirectory);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Past Year Paper");
 
         subjectName = getIntent().getStringExtra("name");
         subjectYear = getIntent().getStringExtra("year");
@@ -45,33 +45,35 @@ public class semester_intake_list extends AppCompatActivity {
         mDatabase.child(subjectName).child(subjectYear).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot trimesterSnapshot : snapshot.getChildren()){
+                for (DataSnapshot trimesterSnapshot : snapshot.getChildren()) {
                     String month = trimesterSnapshot.getKey();
 
                     intakeData = new IntakeData(month);
                     intakeArrayList.add(intakeData);
+                }
+                intakeAdapter = new IntakeAdapter(semester_intake_list.this, intakeArrayList);
 
-                    intakeAdapter = new IntakeAdapter(semester_intake_list.this, intakeArrayList);
+                intakeListView.setAdapter(intakeAdapter);
+                intakeListView.setClickable(true);
 
-                    intakeListView.setAdapter(intakeAdapter);
-                    intakeListView.setClickable(true);
+                intakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String subjectIntake = intakeArrayList.get(i).getMonth(); // Get the clicked subject
+                        Log.d("SubjectName", "Selected subject: " + subjectName);
+                        Intent intent = new Intent(semester_intake_list.this, past_year_discussion.class);
+                        intent.putExtra("name", subjectName);
+                        intent.putExtra("year", subjectYear);
+                        intent.putExtra("month", subjectIntake);
+                        startActivity(intent);
+                    }
 
-                    intakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Log.d("SubjectName", "Selected subject: " + subjectName );
-                            Intent intent = new Intent(semester_intake_list.this, past_year_discussion.class);
-                            intent.putExtra("name",subjectName);
-                            intent.putExtra("year",subjectYear);
-                            intent.putExtra("month",month);
-                            startActivity(intent);
-                        }
-
-                    });
-                    currentDirectory.setText(subjectName + " > "+ subjectYear + " > "+ month);
-
+                });
+                if (!intakeArrayList.isEmpty()) {
+                    currentDirectory.setText(subjectName + " > " + subjectYear + " > " + intakeArrayList.get(0).getMonth());
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

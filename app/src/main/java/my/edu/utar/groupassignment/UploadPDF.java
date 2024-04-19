@@ -22,8 +22,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -36,14 +39,14 @@ import java.util.List;
 public class UploadPDF extends AppCompatActivity {
 
     Button upload_btn;
-    EditText subject_comments,otherSubjectName;
+    EditText subject_comments, otherSubjectName;
 
-    Spinner subjectSpinner,yearSpinner,trimesterSpinner;
+    Spinner subjectSpinner, yearSpinner, trimesterSpinner;
     TextView display_SelectedFile;
     StorageReference storageReference;
     DatabaseReference databaseReference;
 
-    String selectedYear, selectedSubject,selectedTrimester;
+    String selectedYear, selectedSubject, selectedTrimester;
 
 
     @Override
@@ -56,10 +59,10 @@ public class UploadPDF extends AppCompatActivity {
         display_SelectedFile = findViewById(R.id.display_upload_file);
         subjectSpinner = findViewById(R.id.subject_name_spinner);
         yearSpinner = findViewById(R.id.subject_year_spinner);
-        trimesterSpinner =findViewById(R.id.subject_tri_spinner);
+        trimesterSpinner = findViewById(R.id.subject_tri_spinner);
         otherSubjectName = findViewById(R.id.other_subject_edit_text);
 
-    //*Start of Subject Spinner*
+        //*Start of Subject Spinner*
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.subjects_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -84,9 +87,9 @@ public class UploadPDF extends AppCompatActivity {
                 // Do nothing when nothing is selected
             }
         });
-    //*End of Subject Name Spinner*
+        //*End of Subject Name Spinner*
 
-    //*Start of Subject Year Spinner*
+        //*Start of Subject Year Spinner*
         // Get the current year
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
@@ -116,9 +119,9 @@ public class UploadPDF extends AppCompatActivity {
                 // Do nothing when nothing is selected
             }
         });
-    //*End of subject year spinner*
+        //*End of subject year spinner*
 
-    //*Start of subject trimester spinner*
+        //*Start of subject trimester spinner*
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> Triadapter = ArrayAdapter.createFromResource(this,
                 R.array.trimesters_array, android.R.layout.simple_spinner_item);
@@ -141,7 +144,7 @@ public class UploadPDF extends AppCompatActivity {
                 // Do nothing when nothing is selected
             }
         });
-    //*End of subject trimester spinner*
+        //*End of subject trimester spinner*
 
         //Database
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -191,43 +194,64 @@ public class UploadPDF extends AppCompatActivity {
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        StorageReference reference = storageReference.child("Uploads/" + System.currentTimeMillis() + ".pdf");
-        reference.putFile(data)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        String pastyearpaper = "Past Year Paper";
+        String subject = selectedSubject;
+        String year = selectedYear;
+        String month = selectedTrimester;
+
+
+        //Check path exist
+        databaseReference.child(pastyearpaper).child(subject).child(String.valueOf(year)).child(month)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            // Path already exists, show an error message
+                            Toast.makeText(UploadPDF.this, "Past Year Paper Exist!", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        } else {
+                            StorageReference reference = storageReference.child("Uploads/" + System.currentTimeMillis() + ".pdf");
+                            reference.putFile(data)
+                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isComplete()) ;
-                        Uri url = uriTask.getResult();
+                                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                                            while (!uriTask.isComplete()) ;
+                                            Uri url = uriTask.getResult();
 
-                        String subject = selectedSubject;
-                        String year = selectedYear;
-                        String month = selectedTrimester;
-                        String comment = subject_comments.getText().toString();
+                                            String comment = subject_comments.getText().toString();
+                                            pdfClass pdfClass = new pdfClass(comment, url.toString());
 
-                        pdfClass pdfClass = new pdfClass(comment, url.toString());
+                                            String uniqueKey = databaseReference.child(pastyearpaper).child(subject).child(String.valueOf(year)).child(month).push().getKey();
 
-                        String uniqueKey = databaseReference.child(subject).child(String.valueOf(year)).child(month).push().getKey();
+                                            // Set the value in the database with the unique key
+                                            databaseReference.child(pastyearpaper).child(subject).child(String.valueOf(year)).child(month).child(uniqueKey).setValue(pdfClass);
 
-                        // Set the value in the database with the unique key
-                        databaseReference.child(subject).child(String.valueOf(year)).child(month).child(uniqueKey).setValue(pdfClass);
+                                            Toast.makeText(UploadPDF.this, "File Uploaded!!!", Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(UploadPDF.this, "File Uploaded!!!", Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                        }
+                                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
 
+                                            double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                                            progressDialog.setMessage("Uploaded:" + (int) progress + "%");
+
+
+                                        }
+                                    });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle onCancelled event
                         progressDialog.dismiss();
                     }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
-                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                        progressDialog.setMessage("Uploaded:" + (int) progress + "%");
-
-
-                    }
                 });
-
     }
 
     // Method to get the file name from the URI

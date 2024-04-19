@@ -7,4 +7,8 @@ public class IntakeData {
     public IntakeData(String month){
         this.month = month;
     }
+
+    public String getMonth(){
+        return month;
+    }
 }

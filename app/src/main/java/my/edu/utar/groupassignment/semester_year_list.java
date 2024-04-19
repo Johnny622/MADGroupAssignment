@@ -37,7 +37,7 @@ public class semester_year_list extends AppCompatActivity {
         yearListView = findViewById(R.id.yearListview);
         currentDirectory = findViewById(R.id.currentDirectory);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Past Year Paper");
 
         subjectName = getIntent().getStringExtra("name");
         Log.d("SubjectName", "Subject Name: " + subjectName);
@@ -45,11 +45,12 @@ public class semester_year_list extends AppCompatActivity {
         mDatabase.child(subjectName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot yearSnapshot : dataSnapshot.getChildren()){
+                for(DataSnapshot yearSnapshot : dataSnapshot.getChildren()) {
                     String year = yearSnapshot.getKey();
 
                     yearData = new YearData(year);
                     yearArrayList.add(yearData);
+                }
 
                     yearAdapter = new YearAdapter(semester_year_list.this , yearArrayList);
 
@@ -59,17 +60,18 @@ public class semester_year_list extends AppCompatActivity {
                     yearListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            String subjectYear = yearArrayList.get(i).getYear(); // Get the clicked subject
                             Log.d("SubjectName", "Selected subject: " + subjectName );
                             Intent intent = new Intent(semester_year_list.this, semester_intake_list.class);
                             intent.putExtra("name",subjectName);
-                            intent.putExtra("year",year);
+                            intent.putExtra("year",subjectYear);
                             startActivity(intent);
                         }
 
                     });
-
-                    currentDirectory.setText(subjectName + " > "+ year);
-
+                if (!yearArrayList.isEmpty()) {
+                    currentDirectory.setText(subjectName + " > " + yearArrayList.get(0).getYear());
+                }
 
 
 //                    button.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +86,7 @@ public class semester_year_list extends AppCompatActivity {
 //                        }
 //                    });
                 }
-            }
+//            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

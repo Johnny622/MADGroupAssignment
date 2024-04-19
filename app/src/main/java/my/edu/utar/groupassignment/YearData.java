@@ -9,4 +9,8 @@ public class YearData {
         this.year = year;
     }
 
+    public String getYear(){
+        return year;
+    }
+
 }

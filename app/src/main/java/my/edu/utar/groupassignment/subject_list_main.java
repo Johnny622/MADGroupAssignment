@@ -27,8 +27,11 @@ public class subject_list_main extends AppCompatActivity {
 
     ListView subjectlistView;
     ListAdapter listAdapter;
+    ListAdapter searchListAdapter;
     ArrayList<ListData> dataArrayList = new ArrayList<>();
+    ArrayList<ListData> searchArrayList = new ArrayList<>();
     ListData listData;
+    ListData SearchListData;
     DatabaseReference mDatabase;
 
     TextView currentDirectory;
@@ -81,21 +84,106 @@ public class subject_list_main extends AppCompatActivity {
         });
     }
 
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        if (id == R.id.search) {
+//
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.actionbar_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        MenuItem menuItem = menu.findItem(R.id.search);
 
-        if (id == R.id.search) {
+        SearchView searchView = (SearchView) menuItem.getActionView();
 
-            return true;
+        if (searchView != null) {
+            searchView.setQueryHint("Search here");
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String newText) {
+                    subjectlistView.setAdapter(null);
+                    searchArrayList.clear();
+                    String query = newText.toUpperCase();
+
+                    for (ListData data : dataArrayList) {
+                        if (data.getName().contains(query)) {
+                            // If the item matches the query, add it to the searchArrayList
+                            searchArrayList.add(data);
+                        }
+                    }
+
+                    searchListAdapter = new ListAdapter(subject_list_main.this, searchArrayList);
+
+                    // Set the adapter to the ListView to display the search results
+                    subjectlistView.setAdapter(searchListAdapter);
+                    subjectlistView.setClickable(true);
+
+                    subjectlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            String subjectName = searchArrayList.get(i).getName(); // Get the clicked subject
+                            Log.d("SubjectName", "Selected subject: " + subjectName );
+                            Intent intent = new Intent(subject_list_main.this, semester_year_list.class);
+                            intent.putExtra("name",subjectName);
+                            startActivity(intent);
+                        }
+                    });
+
+                    Log.d("onQueryTextSubmit",newText);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    subjectlistView.setAdapter(null);
+                    searchArrayList.clear();
+                    String query = newText.toUpperCase();
+
+                    for (ListData data : dataArrayList) {
+                        if (data.getName().contains(query)) {
+                            // If the item matches the query, add it to the searchArrayList
+                            searchArrayList.add(data);
+                        }
+                    }
+
+                    searchListAdapter = new ListAdapter(subject_list_main.this, searchArrayList);
+
+                    // Set the adapter to the ListView to display the search results
+                    subjectlistView.setAdapter(searchListAdapter);
+                    subjectlistView.setClickable(true);
+
+                    subjectlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            String subjectName = searchArrayList.get(i).getName(); // Get the clicked subject
+                            Log.d("SubjectName", "Selected subject: " + subjectName );
+                            Intent intent = new Intent(subject_list_main.this, semester_year_list.class);
+                            intent.putExtra("name",subjectName);
+                            startActivity(intent);
+                        }
+                    });
+
+                    Log.d("onQueryTextChange",newText);
+                    return true;
+                }
+            });
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onCreateOptionsMenu(menu);
     }
 
 }

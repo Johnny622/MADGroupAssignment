@@ -23,6 +23,7 @@ public class ListAdapter extends ArrayAdapter<ListData> implements Filterable{
 
         this.originalData = dataArrayList;
         this.filteredData = dataArrayList;
+
     }
     @NonNull
     @Override

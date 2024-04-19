@@ -38,13 +38,11 @@
             android:name=".UploadPDF"
             android:exported="false" />
         <activity
-            android:name=".selection"
-            android:exported="false" />
-        <activity
             android:name=".semester_year_list"
             android:exported="false" />
         <activity
             android:name=".subject_list_main"
+            android:theme="@style/AppThemeWithActionBar"
             android:exported="false" />
         <activity
             android:name=".walk_through"

@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.GroupAssignment" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
@@ -24,4 +25,8 @@
     </style>
 
     <style name="Theme.GroupAssignment" parent="Base.Theme.GroupAssignment" />
+
+    <style name="AppThemeWithActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+    </style>
 </resources>

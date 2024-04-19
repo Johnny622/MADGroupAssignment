@@ -1,5 +1,7 @@
 package my.edu.utar.groupassignment;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +50,7 @@ public class UploadPDF extends AppCompatActivity {
 
     String selectedYear, selectedSubject, selectedTrimester;
 
+    private final OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,7 @@ public class UploadPDF extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing when nothing is selected
             }
+
         });
         //*End of Subject Name Spinner*
 
@@ -154,6 +158,16 @@ public class UploadPDF extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectFiles();
+            }
+        });
+
+        onBackPressedDispatcher.addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(UploadPDF.this, home_page.class);
+                startActivity(intent);
+
+                finish();
             }
         });
 

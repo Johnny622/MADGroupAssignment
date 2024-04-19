@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,6 +76,8 @@ public class past_year_discussion extends AppCompatActivity {
     FirebaseAuth auth;
 
     String TAG = "PastYearDiscussion";
+
+    private final OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,6 +163,15 @@ public class past_year_discussion extends AppCompatActivity {
 //        }
 
 
+        onBackPressedDispatcher.addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(past_year_discussion.this, home_page.class);
+                startActivity(intent);
+
+                finish();
+            }
+        });
     }
 
     private void addEmojiText() {

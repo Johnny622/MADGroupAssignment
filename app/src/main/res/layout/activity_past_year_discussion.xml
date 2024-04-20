@@ -16,7 +16,8 @@
         android:textSize="15sp"
         android:background="@color/gray"
         android:textColor="@color/white"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:text=""/>
 
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfView"

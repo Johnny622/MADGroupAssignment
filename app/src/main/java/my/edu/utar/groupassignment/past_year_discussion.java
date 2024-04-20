@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -45,6 +46,8 @@ public class past_year_discussion extends AppCompatActivity {
     Button postBtn;
     EditText discussionText;
     ImageView btEmoji;
+
+    TextView curDir;
     List<pdfClass> uploadPdf;
     String subjectName, subjectYear, subjectIntake;
 
@@ -63,6 +66,7 @@ public class past_year_discussion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_year_discussion);
 
+        curDir = findViewById(R.id.currentDirectory);
         uploadPdf = new ArrayList<>();
 
         subjectName = getIntent().getStringExtra("name");
@@ -70,6 +74,8 @@ public class past_year_discussion extends AppCompatActivity {
         subjectIntake = getIntent().getStringExtra("month");
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Past Year Paper").child(subjectName).child(subjectYear).child(subjectIntake);
+
+        curDir.setText(subjectName + " > "+subjectYear + " > "+subjectIntake);
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -199,7 +205,6 @@ public class past_year_discussion extends AppCompatActivity {
                         if (!snapshot.getKey().equals("Comments")) {
                             // Retrieve the key
                             String key = snapshot.getKey();
-                            Log.d(TAG, "Key: " + key);
                             // Now you can use the key as needed
 
                             mDatabase.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -208,9 +213,7 @@ public class past_year_discussion extends AppCompatActivity {
                                     for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
                                         String url = snapshot1.child("url").getValue(String.class);
                                         if (url != null) {
-                                            Log.d("URL", url);
-                                            Toast.makeText(past_year_discussion.this, "Url : " + url, Toast.LENGTH_SHORT).show();
-                                            downloadAndDisplayPdf(url);
+                                             downloadAndDisplayPdf(url);
                                         }
                                     }
                                 }

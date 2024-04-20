@@ -24,15 +24,6 @@
             android:name=".home_page"
             android:exported="false" />
         <activity
-            android:name=".Subject_Trimester"
-            android:exported="false" />
-        <activity
-            android:name=".Subject_Year"
-            android:exported="false" />
-        <activity
-            android:name=".Subject_List"
-            android:exported="false" />
-        <activity
             android:name=".Comments"
             android:exported="false" />
         <activity

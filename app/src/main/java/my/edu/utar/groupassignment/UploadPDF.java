@@ -36,6 +36,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,19 +44,16 @@ import java.util.List;
 public class UploadPDF extends AppCompatActivity {
 
     Button upload_btn;
-
     ImageView choose_file_btn;
-    EditText subject_comments, otherSubjectName, otherSubjectTrimester;
-
+    EditText subject_comments, otherSubjectName;
     Spinner subjectSpinner, yearSpinner, trimesterSpinner;
     TextView display_SelectedFile;
     StorageReference storageReference;
     DatabaseReference databaseReference;
     Uri selectedFileUri;
-
     String selectedYear, selectedSubject, selectedTrimester;
-
     private final OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +67,12 @@ public class UploadPDF extends AppCompatActivity {
         yearSpinner = findViewById(R.id.subject_year_spinner);
         trimesterSpinner = findViewById(R.id.subject_tri_spinner);
         otherSubjectName = findViewById(R.id.other_subject_edit_text);
-        otherSubjectTrimester = findViewById(R.id.otherTrimester);
         choose_file_btn = findViewById(R.id.choose_file_btn);
 
-        //*Start of Subject Spinner*
+        //Database
+        storageReference = FirebaseStorage.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.subjects_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -82,25 +82,23 @@ public class UploadPDF extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedSubject = parentView.getItemAtPosition(position).toString();
-                // Do something with the selected subject
+                // When User Choose Other Then Display The TextView for INPUT
                 if (selectedSubject.equals("Other")) {
                     otherSubjectName.setVisibility(View.VISIBLE);
                 } else {
                     otherSubjectName.setVisibility(View.GONE);
                 }
-                // For example, you can display it or use it in further processing
-                Log.d("SelectedSubject", selectedSubject);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing when nothing is selected
+                Log.d("Spinner", "No item selected");
             }
 
         });
-        //*End of Subject Name Spinner*
 
-        //*Start of Subject Year Spinner*
+
         // Get the current year
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
@@ -120,26 +118,23 @@ public class UploadPDF extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedYear = parentView.getItemAtPosition(position).toString();
-                // Do something with the selected year
-                // For example, you can display it or use it in further processing
-                Log.d("SelectedYear", selectedYear);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing when nothing is selected
+                Log.d("Spinner", "No item selected");
             }
         });
-        //*End of subject year spinner*
 
-        //*Start of subject trimester spinner*
+
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> Triadapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> TriAdapter = ArrayAdapter.createFromResource(this,
                 R.array.trimesters_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
-        Triadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        TriAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        trimesterSpinner.setAdapter(Triadapter);
+        trimesterSpinner.setAdapter(TriAdapter);
 
         trimesterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,11 +142,6 @@ public class UploadPDF extends AppCompatActivity {
                 selectedTrimester = parentView.getItemAtPosition(position).toString();
                 // Do something with the selected year
 
-                if (selectedTrimester.equals("Other")) {
-                    otherSubjectTrimester.setVisibility(View.VISIBLE);
-                } else {
-                    otherSubjectTrimester.setVisibility(View.GONE);
-                }
                 // For example, you can display it or use it in further processing
                 Log.d("SelectedTrimester", selectedTrimester);
             }
@@ -161,11 +151,6 @@ public class UploadPDF extends AppCompatActivity {
                 // Do nothing when nothing is selected
             }
         });
-        //*End of subject trimester spinner*
-
-        //Database
-        storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         choose_file_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,10 +158,16 @@ public class UploadPDF extends AppCompatActivity {
                 selectFiles();
             }
         });
+
         upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UploadFiles(selectedFileUri);
+
+                boolean uploadFiles = UploadFiles(selectedFileUri);
+
+                if(!uploadFiles){
+                    return;
+                }
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -229,10 +220,19 @@ public class UploadPDF extends AppCompatActivity {
 
     }
 
-    private void UploadFiles(Uri data) {
+    private boolean UploadFiles(Uri data) {
 
         if (otherSubjectName.getVisibility() == View.VISIBLE) {
+
             selectedSubject = otherSubjectName.getText().toString();
+            if(selectedSubject.isEmpty()){
+                Toast.makeText(UploadPDF.this, "Please Insert The Subject Before Upload", Toast.LENGTH_LONG).show();
+                otherSubjectName.setFocusableInTouchMode(true);
+                otherSubjectName.setFocusable(true);
+
+                otherSubjectName.requestFocus();
+                return false;
+            }
         }
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -282,7 +282,9 @@ public class UploadPDF extends AppCompatActivity {
                                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
 
                                             double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                                            progressDialog.setMessage("Uploaded:" + (int) progress + "%");
+                                            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                                            String formattedProgress = decimalFormat.format(progress);
+                                            progressDialog.setMessage("Uploaded:" + formattedProgress + "%");
 
 
                                         }
@@ -297,6 +299,7 @@ public class UploadPDF extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 });
+        return true;
     }
 
     // Method to get the file name from the URI
@@ -306,7 +309,14 @@ public class UploadPDF extends AppCompatActivity {
             Cursor cursor = getContentResolver().query(uri, null, null, null, null);
             try {
                 if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    int displayNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (displayNameIndex != -1) {
+                        result = cursor.getString(displayNameIndex);
+                    } else {
+                        // If DISPLAY_NAME column doesn't exist, use another method to extract filename
+                        // For example, extract it from the URI path
+                        result = uri.getLastPathSegment();
+                    }
                 }
             } finally {
                 if (cursor != null) {

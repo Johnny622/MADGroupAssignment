@@ -1,19 +1,13 @@
 package my.edu.utar.groupassignment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -36,18 +30,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 import com.vanniktech.emoji.EmojiPopup;
-import com.vanniktech.emoji.EmojiTextView;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import my.edu.utar.groupassignment.Adapters.DiscussionAdapter;
-
 
 public class past_year_discussion extends AppCompatActivity {
 
@@ -56,17 +45,7 @@ public class past_year_discussion extends AppCompatActivity {
     Button postBtn;
     EditText discussionText;
     ImageView btEmoji;
-
     List<pdfClass> uploadPdf;
-
-//    TextView CurrentDirectory;
-//
-//    private PDFView pdfView;
-
-//    List<PaperDiscussion> discussionList;
-//    ArrayAdapter<PaperDiscussion> adapter;
-//    ListView listViewDiscussions;
-
     String subjectName, subjectYear, subjectIntake;
 
     private ListView listViewDiscussions;
@@ -86,15 +65,6 @@ public class past_year_discussion extends AppCompatActivity {
 
         uploadPdf = new ArrayList<>();
 
-//        CurrentDirectory.findViewById(R.id.currentDirectory);
-//        try {
-//
-//            pdfView.fromAsset("MPU32143 English For Information Technology_December_2021.pdf") // Load PDF from assets folder
-//                    .load();
-//        }catch(Exception ex){
-//            Log.d("Error PDFview : ",ex.getMessage());
-//        }
-
         subjectName = getIntent().getStringExtra("name");
         subjectYear = getIntent().getStringExtra("year");
         subjectIntake = getIntent().getStringExtra("month");
@@ -105,28 +75,22 @@ public class past_year_discussion extends AppCompatActivity {
 
         try {
             retrievePdfUrlFromDatabase();
-//            /ViewPdfFile();
         } catch (Exception ex) {
-//            CurrentDirectory.setText("Error "+ ex.getMessage());
             Log.d("Error ", ex.getMessage());
         }
-
 
         postBtn = findViewById(R.id.postBtn);
         discussionText = findViewById(R.id.commentEditText);
         btEmoji = findViewById(R.id.bt_emoji);
         listViewDiscussions = findViewById(R.id.listViewDiscussions);
 
-        // Assign the xml view to java
 
         discussionList = new ArrayList<>();
         adapter = new DiscussionAdapter(this, R.layout.activity_past_year_discussion, discussionList);
         listViewDiscussions.setAdapter(adapter);
-
-//        discussionList.add(new PaperDiscussion( "1","Huiyi","Hello World"));
-//        discussionList.add(new PaperDiscussion( "This is a test message"));
         adapter.notifyDataSetChanged();
 
+        retrieveDiscussions();
         //emoji popup
         EmojiPopup popup = EmojiPopup.Builder.fromRootView(
                 findViewById(R.id.listViewDiscussions)
@@ -149,18 +113,9 @@ public class past_year_discussion extends AppCompatActivity {
 
                 addEmojiText();
                 retrieveDiscussions();
-//
             }
         });
 
-        // Retrieve the file name from the intent extras
-//        Intent intent = getIntent();
-//        if (intent != null && intent.hasExtra("pdfFileName")) {
-//            String pdfFileName = intent.getStringExtra("pdfFileName");
-//
-//            // Load the PDF file based on the file name
-//            loadPDF(pdfFileName);
-//        }
 
 
         onBackPressedDispatcher.addCallback(new OnBackPressedCallback(true) {
@@ -179,14 +134,9 @@ public class past_year_discussion extends AppCompatActivity {
         //String userId = user.getUid();
         String text = discussionText.getText().toString();
         if (!text.isEmpty()) {
-//            EmojiTextView emojiTextView = (EmojiTextView) LayoutInflater.from(this).inflate(R.layout.emoji_text_view, listViewDiscussions, false);
-//            emojiTextView.setText(text);
-//            listViewDiscussions.addView(emojiTextView);
-//            discussionText.getText().clear(); // Clear after adding to view
             discussionList.add(new PaperDiscussion(username, text));  // Assuming PaperDiscussion can be initialized this way
             adapter.notifyDataSetChanged();  // Notify the adapter that the data has changed
             discussionText.getText().clear();
-
         }
     }
 
@@ -197,11 +147,6 @@ public class past_year_discussion extends AppCompatActivity {
 
         if (user != null && !comment.isEmpty()) {
             String username = auth.getCurrentUser().getDisplayName(); // Get the user's name from their Google profile
-//            userTextView.setText()
-//
-//            String username = user.getDisplayName(); // Get the user's name from their Google profile
-
-            //String userId = user.getUid(); // Get the user's unique ID from Firebase Authentication
 
             if (username == null || username.isEmpty()) {
                 username = "Anonymous"; // Fallback username if name is not available
@@ -222,30 +167,7 @@ public class past_year_discussion extends AppCompatActivity {
             Toast.makeText(this, "User is not authenticated.", Toast.LENGTH_SHORT).show();
         }
 
-//        if(!comment.isEmpty()){
-//            PaperDiscussion newDiscussion = new PaperDiscussion(comment);
-//            discussionList.add(newDiscussion);
-//            adapter.notifyDataSetChanged();
-//
-//            DatabaseReference commentsRef = mDatabase.child("Comments").push();
-//            commentsRef.setValue(newDiscussion).addOnSuccessListener(aVoid->{
-//                Toast.makeText(past_year_discussion.this, "Comment added!", Toast.LENGTH_SHORT).show();
-//                discussionText.setText("");
-//            }).addOnFailureListener(e -> Toast.makeText(past_year_discussion.this, "Failed to add comment: " + e.getMessage(), Toast.LENGTH_LONG).show());
-//        }
-
     }
-
-//    private void loadPDF(String pdfName) {
-//        PDFView pdfView = findViewById(R.id.pdfView);
-////
-//        pdfView.fromAsset(pdfName).load();
-//
-//
-////        pdfView.fromUri(Uri.parse(url)).load();
-////    }
-//    }
-
     private void retrieveDiscussions() {
         DatabaseReference discussionRef = mDatabase.child("Comments");
         discussionRef.addValueEventListener(new ValueEventListener() {
@@ -292,13 +214,11 @@ public class past_year_discussion extends AppCompatActivity {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
                             });
-//                        CurrentDirectory.setText("Url : "+key);
                         }
                     }
                 } catch (Exception ex) {
@@ -354,66 +274,4 @@ public class past_year_discussion extends AppCompatActivity {
             Log.e(TAG, "Error creating temporary file: " + e.getMessage());
         }
     }
-
-//    private void ViewPdfFile(){
-//
-//        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                try {
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        if (!snapshot.getKey().equals("Comments")) {
-//                            // Retrieve the key
-//                            String key = snapshot.getKey();
-//                            Log.d(TAG, "Key: " + key);
-//                            // Now you can use the key as needed
-//
-//                            mDatabase.child(key).addValueEventListener(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                    for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
-//                                       pdfClass pdfClass = snapshot1.getValue(my.edu.utar.groupassignment.pdfClass.class);
-//                                       uploadPdf.add(pdfClass);
-//                                    }
-//
-//                                    String[] uploadName = new String[uploadPdf.size()];
-//
-//                                    for(int i=0;i<uploadName.length;i++){
-//                                        uploadName[i] = uploadPdf.get(i).getUrl();
-//                                    }
-//
-//                                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),
-//                                            android.R.layout.activity_list_item,uploadName){
-//
-//                                        @NonNull
-//                                        @Override
-//                                        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//                                            View view =  super.getView(position, convertView, parent);
-//
-//                                            TextView textView = (TextView) view.findViewById()
-//                                        }
-//                                    };
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                                }
-//                            });
-////                        CurrentDirectory.setText("Url : "+key);
-//                        }
-//                    }
-//                } catch (Exception ex) {
-//                    Log.d("Error", ex.getMessage());
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e(TAG, "Failed to retrieve PDF URLs: " + databaseError.getMessage());
-//            }
-//        });
-//
-//    }
-
 }

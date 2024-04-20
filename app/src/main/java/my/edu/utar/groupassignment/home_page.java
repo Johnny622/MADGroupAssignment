@@ -1,5 +1,7 @@
 package my.edu.utar.groupassignment;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -15,31 +17,43 @@ import android.widget.Toast;
 
 public class home_page extends AppCompatActivity {
 
-    CardView cardView;
+    CardView cardViewSubject,cardViewUpload;
+
+    private final OnBackPressedDispatcher onBackPressedDispatcher = getOnBackPressedDispatcher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        cardView =findViewById(R.id.past_year_discussion);
+        cardViewSubject =findViewById(R.id.past_year_discussion);
 
-        cardView.setOnClickListener(new View.OnClickListener() {
+        cardViewSubject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(home_page.this, subject_list_main.class);
                 startActivity(intent);
-                finish();
+//                finish();
             }
         });
 
-        cardView =findViewById(R.id.upload_past_year);
+        cardViewUpload =findViewById(R.id.upload_past_year);
 
-        cardView.setOnClickListener(new View.OnClickListener() {
+        cardViewUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(home_page.this, UploadPDF.class);
                 startActivity(intent);
+//                finish();
+            }
+        });
+
+        onBackPressedDispatcher.addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(home_page.this, Login.class);
+                startActivity(intent);
+
                 finish();
             }
         });

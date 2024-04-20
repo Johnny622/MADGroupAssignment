@@ -7,25 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".subject_list_main">
 
-    <TextView
-        android:id="@+id/currentDirectory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/subjectListview"/>
+<!--    <TextView-->
+<!--        android:id="@+id/currentDirectory"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/gray"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/subjectListview"/>-->
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/subjectListview"
         android:scrollbars="vertical"
-        android:layout_marginTop="21dp"
+
         tools:listitem="@layout/subject_list"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"/>

@@ -35,7 +35,8 @@
                 android:text="Upload PDF"
                 android:textColor="@color/black"
                 android:textSize="35sp"
-                android:fontFamily="@font/baloo" />
+                android:fontFamily="@font/baloo"
+                />
 
             <TextView
                 android:id="@+id/subject_name"
@@ -123,15 +124,7 @@
                     android:textSize="30sp"
                     android:background="@drawable/spinner_design"/>
 
-                <EditText
-                    android:id="@+id/otherTrimester"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/subject_tri_spinner"
-                    android:layout_marginTop="10dp"
-                    android:hint="Enter trimester"
-                    android:inputType="text"
-                    android:visibility="gone" />
+
             </LinearLayout>
 
             <TextView
@@ -175,7 +168,8 @@
                     android:text="Done"
                     android:textSize="20sp"
                     android:backgroundTint="@color/blue_dark"
-                    app:cornerRadius = "20dp" />
+                    app:cornerRadius = "20dp"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/choose_file_btn"

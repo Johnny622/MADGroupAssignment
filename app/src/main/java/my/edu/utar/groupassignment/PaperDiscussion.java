@@ -7,14 +7,10 @@ public class PaperDiscussion {
     private String username;
     private String discussion;
 
-
-
     public PaperDiscussion() {
     }
 
     public PaperDiscussion( String username,String discussion) {
-//        this.user = user;
-
         this.username = username;
         this.discussion = discussion;
     }
@@ -23,14 +19,6 @@ public class PaperDiscussion {
     public String getUsername() {
         return username;
     }
-
-//    public String getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(String user) {
-//        this.user = user;
-//    }
 
     public String getDiscussion() {
         return discussion;

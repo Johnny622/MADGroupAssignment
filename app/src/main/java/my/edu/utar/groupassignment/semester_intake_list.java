@@ -42,6 +42,9 @@ public class semester_intake_list extends AppCompatActivity {
         subjectName = getIntent().getStringExtra("name");
         subjectYear = getIntent().getStringExtra("year");
 
+        currentDirectory.setText(subjectName + " > " + subjectYear + " > ");
+
+
         mDatabase.child(subjectName).child(subjectYear).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -60,7 +63,7 @@ public class semester_intake_list extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String subjectIntake = intakeArrayList.get(i).getMonth(); // Get the clicked subject
-                        Log.d("SubjectName", "Selected subject: " + subjectName);
+                        Log.d("Current Directory", subjectName + " > " + subjectYear + " > "+subjectIntake);
                         Intent intent = new Intent(semester_intake_list.this, past_year_discussion.class);
                         intent.putExtra("name", subjectName);
                         intent.putExtra("year", subjectYear);
@@ -69,14 +72,13 @@ public class semester_intake_list extends AppCompatActivity {
                     }
 
                 });
-                if (!intakeArrayList.isEmpty()) {
-                    currentDirectory.setText(subjectName + " > " + subjectYear + " > " + intakeArrayList.get(0).getMonth());
-                }
+
             }
 
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseDatabase", "Database operation canceled: " + error.getMessage());
 
             }
         });

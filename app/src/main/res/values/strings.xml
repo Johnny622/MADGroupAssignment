@@ -35,6 +35,10 @@
         <item>MPU33013 MALAYSIA ECONOMY</item>
         <item>UALF1003 INTRODUCTION TO FRENCH</item>
         <item>UCCN1004 DATA COMMUNICATIONS AND NETWORKING</item>
+        <item>UCCD3053 INFORMATION TECHNOLOGY PROFESSIONAL ETHICS</item>
+        <item>UCCD2323 FRONT-END WEB DEVELOPMENT</item>
+        <item>UCCB1223 RAPID APPLICATION DEVELOPMENT</item>
+        <item>UCCD2303 DATABASE TECHNOLOGY SEPTEMBER</item>
         <item>Other</item>
         <!-- Add more subjects as needed -->
     </string-array>
